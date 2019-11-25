@@ -1,6 +1,6 @@
 {
   "name": "@northscaler/continuation-local-storage",
-  "version": "3.0.0-pre.12",
+  "version": "3.0.0-pre.13",
   "description": "Local storage for asynchronous Node.js call stacks, similar to thread-local storage in multithreaded platforms",
   "repository": {
     "type": "git",
