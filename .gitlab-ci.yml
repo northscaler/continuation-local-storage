@@ -13,8 +13,6 @@ build:
   script:
   - npm install
   - npm run build
-  except:
-    - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(pre|rc)\.[0-9]{1,})?)$/
 
 publish:
   stage: publish
