@@ -1,7 +1,7 @@
 .authenticate-to-npmjs:
   - &authenticate-to-npmjs |
       echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
-      echo "//$NPM_REGISTRY_HOST/:_authToken=$(echo -n $NPM_AUTH_TOKEN | base64)" >> ~/.npmrc
+      echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_AUTH_TOKEN" >> ~/.npmrc
 
 stages:
   - build
@@ -19,6 +19,7 @@ publish:
   image: mhart/alpine-node:8
   script:
   - *authenticate-to-npmjs
+  - cat ~/.npmrc
   - npm install
   - npm run make-distribution
   - cd lib/main
