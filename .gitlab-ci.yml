@@ -13,9 +13,8 @@ publish:
   stage: publish
   image: mhart/alpine-node:8
   script:
-  - echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" > ~/.npmrc
-  - echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_TOKEN" >> ~/.npmrc
   - npm install
+  - npx npm-cli-login # uses env vars NPM_USER, NPM_PASS, NPM_EMAIL, NPM_SCOPE
   - npm run make-distribution
   - cd lib/main
   - npm publish --access public
