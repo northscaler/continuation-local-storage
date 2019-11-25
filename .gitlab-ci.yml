@@ -1,3 +1,8 @@
+.authenticate-to-npmjs:
+  - &authenticate-to-npmjs |
+    echo "$NPM_SCOPE:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
+    echo "//$NPM_REGISTRY_HOST/:_authToken=$(echo -n $NPM_TOKEN | base64)" >> ~/.npmrc
+
 stages:
   - build
   - publish
@@ -6,17 +11,17 @@ build:
   stage: build
   image: mhart/alpine-node:8
   script:
-  - npm install
-  - npm run build
+    - npm install
+    - npm run build
 
 publish:
   stage: publish
   image: mhart/alpine-node:8
   script:
-  - npm install
-  - npx npm-cli-login -u "$NPM_USER" -p "$NPM_PASS" -e "$NPM_EMAIL" -s "$NPM_SCOPE"
-  - npm run make-distribution
-  - cd lib/main
-  - npm publish --access public
+    - *authenticate-to-npmjs
+    - npm install
+    - npm run make-distribution
+    - cd lib/main
+    - npm publish --access public
   only:
     - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(pre|rc)\.[0-9]{1,})?)$/
