@@ -1,7 +1,7 @@
 .authenticate-to-npmjs:
   - &authenticate-to-npmjs |
       echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
-      echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_AUTH_TOKEN" >> ~/.npmrc
+      echo "//$NPM_REGISTRY_HOST/:_authToken=$(echo -n $NPM_AUTH_TOKEN | base64)" >> ~/.npmrc
 
 stages:
   - build
@@ -22,6 +22,6 @@ publish:
   - npm install
   - npm run make-distribution
   - cd lib/main
-  - npm publish .
+  - npm publish --access public
   only:
     - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(pre|rc)\.[0-9]{1,})?)$/
