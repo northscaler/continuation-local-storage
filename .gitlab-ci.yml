@@ -9,9 +9,6 @@ stages:
 
 build:
   stage: build
-  tags:
-    - northscaler
-    - public
   image: mhart/alpine-node:8
   script:
   - npm install
@@ -19,9 +16,6 @@ build:
 
 #publish:
 #  stage: publish
-#  tags:
-#    - northscaler
-#    - public
 #  script:
 #  - *authenticate-to-npmjs
 #  - npm install
