@@ -1,0 +1,32 @@
+#.authenticate-to-npmjs:
+#  - &authenticate-to-npmjs |
+#      echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
+#      echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_AUTH_TOKEN" >> ~/.npmrc
+
+stages:
+  - build
+#  - publish
+
+build:
+  stage: build
+  tags:
+    - northscaler
+    - public
+  image: mhart/alpine-node:8
+  script:
+  - npm install
+  - npm run build
+
+#publish:
+#  stage: publish
+#  tags:
+#    - northscaler
+#    - public
+#  script:
+#  - *authenticate-to-npmjs
+#  - npm install
+#  - npm run make-distribution
+#  - cd lib/main
+#  - npm publish .
+#  only:
+#    - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(dev|rc)\.[0-9]{1,})?)$/
