@@ -19,7 +19,6 @@ publish:
   image: mhart/alpine-node:8
   script:
   - *authenticate-to-npmjs
-  - cat ~/.npmrc
   - npm install
   - npm run make-distribution
   - cd lib/main
