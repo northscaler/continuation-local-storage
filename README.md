@@ -1,4 +1,5 @@
 # `continuation-local-storage`
+>NB: Git repo of truth is https://gitlab.com/northscaler-public/continuation-local-storage; all others are mirrors.
 
 ## Overview
 This module provides a means to store information along the entirety of a single Node.js asynchronous call chain, or "continuation".
