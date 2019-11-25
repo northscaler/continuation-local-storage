@@ -1,11 +1,11 @@
-#.authenticate-to-npmjs:
-#  - &authenticate-to-npmjs |
-#      echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
-#      echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_AUTH_TOKEN" >> ~/.npmrc
+.authenticate-to-npmjs:
+  - &authenticate-to-npmjs |
+      echo "@northscaler:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
+      echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_AUTH_TOKEN" >> ~/.npmrc
 
 stages:
   - build
-#  - publish
+  - publish
 
 build:
   stage: build
@@ -14,13 +14,13 @@ build:
   - npm install
   - npm run build
 
-#publish:
-#  stage: publish
-#  script:
-#  - *authenticate-to-npmjs
-#  - npm install
-#  - npm run make-distribution
-#  - cd lib/main
-#  - npm publish .
-#  only:
-#    - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(dev|rc)\.[0-9]{1,})?)$/
+publish:
+  stage: publish
+  script:
+  - *authenticate-to-npmjs
+  - npm install
+  - npm run make-distribution
+  - cd lib/main
+  - npm publish .
+  only:
+    - /^([0-9]{1,}\.[0-9]{1,}\.[0-9]{1,}(-(dev|rc)\.[0-9]{1,})?)$/
