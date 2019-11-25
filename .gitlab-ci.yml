@@ -1,8 +1,3 @@
-.authenticate-to-npmjs:
-  - &authenticate-to-npmjs |
-    echo "$NPM_SCOPE:registry=https://$NPM_REGISTRY_HOST/" >> ~/.npmrc
-    echo "//$NPM_REGISTRY_HOST/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-
 stages:
   - build
   - publish
@@ -18,9 +13,9 @@ publish:
   stage: publish
   image: mhart/alpine-node:8
   script:
-    - *authenticate-to-npmjs
-    - cat ~/.npmrc
     - npm install
+    - npx npm-cli-login -u "$NPM_USER" -p "$NPM_PASS" -e "$NPM_EMAIL" -s "$NPM_SCOPE"
+    - cat ~/.npmrc
     - npm run make-distribution
     - cd lib/main
     - npm publish --access public
