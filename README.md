@@ -10,7 +10,7 @@ Contexts allow you to place information in a continuation-local storage space so
 ## Use
 There two flavors to choose from: one based on [`cls-hooked`](https://www.npmjs.com/package/cls-hooked), and one based on [`zone.js`](https://www.npmjs.com/package/zone.js).
 Use whichever one you want to; the `Context` API is the same:
-* Run code in a context: `Context().run(() => { /* your code here */ }, { your: 'context', values: 'here')`
+* Run code in a context: `Context().run(() => { /* your code here */ }, { your: 'context', values: 'here' })`
 * Set a value in a context: `Context().set('name', 'value')`
 * Get a value from a context: `Context().get('name')`
 
