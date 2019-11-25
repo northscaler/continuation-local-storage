@@ -14,7 +14,7 @@ publish:
   image: mhart/alpine-node:8
   script:
   - npm install
-  - npx npm-cli-login # uses env vars NPM_USER, NPM_PASS, NPM_EMAIL, NPM_SCOPE
+  - npx npm-cli-login -u "$NPM_USER" -p "$NPM_PASS" -e "$NPM_EMAIL" -s "$NPM_SCOPE"
   - npm run make-distribution
   - cd lib/main
   - npm publish --access public
