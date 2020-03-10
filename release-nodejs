@@ -2,7 +2,7 @@
 
 # MIT License
 #
-# Copyright (c) 2018 SciSpike, LLC
+# Copyright (c) 2018 Northscaler, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ echo "INFO: using project file: $PACKAGE_JSON"
 
 FX_nodejs=fx
 if [ -n "$NO_USE_LOCAL_FX" ] || ! which $FX_nodejs; then
-  FX_nodejs="docker run -v "$(pwd)"/$PACKAGE_JSON:/$PACKAGE_JSON scispike/fx:latest $PACKAGE_JSON"
+  FX_nodejs="docker run --rm -v "$(pwd)"/$PACKAGE_JSON:/$PACKAGE_JSON scispike/fx:latest $PACKAGE_JSON"
 fi
 
 getVersion_nodejs() {
