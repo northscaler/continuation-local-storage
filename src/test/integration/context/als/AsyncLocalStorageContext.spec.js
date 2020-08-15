@@ -1,6 +1,8 @@
 /* global describe, it, before */
 'use strict'
 
+const { AsyncLocalStorage } = require('async_hooks')
+
 const chai = require('chai')
 chai.use(require('dirty-chai'))
 const expect = chai.expect
@@ -52,5 +54,24 @@ describe('AsyncLocalStorageTest', function () {
     const name = uuid()
     const context = Context(name)._context
     expect(Context(name)._context).to.equal(context)
+  })
+
+  it('should work with setTimeout without Context abstraction', function (done) {
+    const value = uuid()
+    const als = new AsyncLocalStorage()
+
+    function x () { expect(als.getStore().value).to.equal(value) }
+
+    als.run({ value }, () => {
+      x()
+      setTimeout(() => {
+        try {
+          x()
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }, 5)
+    })
   })
 })
