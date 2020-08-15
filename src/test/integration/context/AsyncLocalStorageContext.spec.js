@@ -33,15 +33,15 @@ describe('AsyncLocalStorageTest', function () {
   })
 
   it('should work with setTimeout', function (done) {
-    tests.testContextValueAvailableInSetTimeout(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInSetTimeout(Context, uuid(), done)
   })
 
   it('should work with Promise.resolve', function (done) {
-    tests.testContextValueAvailableInPromiseResolve(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInPromiseResolve(Context, uuid(), done)
   })
 
   it('should work with Promise.reject', function (done) {
-    tests.testContextValueAvailableInPromiseReject(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInPromiseReject(Context, uuid(), done)
   })
 
   it('should work with async/await', async function () {
