@@ -23,7 +23,7 @@
     "nuke": "rimraf node_modules",
     "transpile-main": "babel --delete-dir-on-start --verbose --out-dir dist/main --copy-files src/main",
     "transpile-test": "babel --delete-dir-on-start --verbose --out-dir dist/test --copy-files src/test",
-    "unit-integration": "nyc --check-coverage -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/**/*.spec.js'",
+    "unit-integration": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/**/*.spec.js'",
     "postunit-integration": "run-s report",
     "integration": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/integration/**/*.spec.js'",
     "postintegration": "run-s report",
