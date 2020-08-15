@@ -39,9 +39,7 @@ If you are using `ClsHookedContext`:
 ### AsyncLocalStorage
 If you are using `AsyncLocalStorage`:
 * Your Node.js version must be `>=12.17.0`.
-* If you're using `setTimeout`, `Promise.resolve` or `Promise.reject` within your `run` call, you must set the `autodispose` option to `false` in order to make the values available in those places.
-See the tests in `src/test/unit/AsyncLocalStorageContext.spec.js`, in particular, `should work with setTimeout`, `should work with Promise.resolve` & `should work with Promise.reject`.
-Track progress at https://gitlab.com/northscaler-public/continuation-local-storage/-/issues/2.
+* If you're using `setTimeout`, `Promise.resolve` or `Promise.reject` within your `run` call, you must ensure that the `autodispose` option is set to `false` (the default) in order to make the values available in those places.
 
 See this project's `package.json` `devDependencies` section for the versions of `cls-hooked` and `zone.js` was built against and try to install compatible ones.
 
@@ -50,22 +48,38 @@ The basic API of these `Context`s is straightforward.
 Once you get the `Context` (via `require` or `import`), these are the methods you'll use:
 
 ### Factory method
-* `Context(key)`: Retrieves a context with the given key as a string (`Symbol`ic names are a [todo](https://gitlab.com/northscaler-public/continuation-local-storage/-/issues/3)).
+`Context(key)`:
+
+Retrieves a context with the given key as a string (`Symbol`ic names are a [todo](https://gitlab.com/northscaler-public/continuation-local-storage/-/issues/3)).
 
 ### Instance methods
-* `run(fn, values, opts)`: Runs a given function within the `Context`, making any `values`, an `Object`, available.  `opts` currently includes only `autodispose` and is `true` by default.
-* `set(key, value)`: Sets the given `value` at the given `key`.
-* `get(key)`: Gets the `value` at the given `key`.
-* `dispose()`: It's not a bad idea to dispose of the `Context` when you know you're done with it, but it's not strictly required.
-The `run` method defaults to automatic disposal, but if you observe memory leaks, this would be the first thing to check.
+
+`run(fn, values, opts)`:
+
+Runs a given function within the `Context`, making any `values`, an `Object`, available.  `opts` currently includes only `autodispose` and is `true` by default.
+
+`set(key, value)`
+
+Sets the given `value` at the given `key`.
+
+`get(key)`
+
+Gets the `value` at the given `key`.
+
+`dispose()`
+
+It's not a bad idea to dispose of the `Context` when you know you're done with it, but it's not strictly required.
+The `run` method defaults to manual disposal, but if you observe memory leaks, this would be the first thing to check.
 
 ## Example
 ```javascript
-// prerequisite:  npm install --save cls-hooked
+const { ClsHookedContext: Context } = require('@northscaler/continuation-local-storage') // prerequisite:  npm install --save cls-hooked
+// or: const { ZoneJsContext: Context } = require('@northscaler/continuation-local-storage') // prerequisite:  npm install --save zone.js
+// or: const { AsyncLocalStorageContext: Context } = require('@northscaler/continuation-local-storage') // prerequisite:  Node.js >= 12.17.0
 
-const { ClsHookedContext: Context } = require('@northscaler/continuation-local-storage') // or ZoneJsContext, AsyncLocalStorageContext
-
-Context().run(() => { // uses the default context; pass a string name for a custom context
+Context().run(
+// this is the function that will be run in inside the Context
+() => { // uses the default context; pass a string name for a custom context
   // Do whatever you want here.
   // Context values are accessible anywhere in the sync or async call stack:
   const foo = Context().get('foo') // returns 'bar'
@@ -73,7 +87,9 @@ Context().run(() => { // uses the default context; pass a string name for a cust
   // You can set & get values with:
   Context().set('baz', 'snafu')
   const baz = Context().get('baz') // returns 'snafu'
-}, { // these are your contextual values available in the async call stack
+},
+// these are your contextual values available in the async call stack
+{
   foo: 'bar' // puts the value 'bar' into the context at key 'foo'
 })
 ```
