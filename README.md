@@ -18,6 +18,9 @@ Use whichever one you want to; the `Context` API is the same:
 * Set a value in a context: `Context().set('name', 'value')`
 * Get a value from a context: `Context().get('name')`
 
+Using more than one implementation should work, but is not officially supported.
+Try to stick with just one provider in your app.
+
 >IMPORTANT:
 > In order to minimize transitive dependencies in your application, this module does _not_ require `cls-hooked` or `zone.js` itself.
 > The consuming codebase must install the library (or libraries) that it needs.
