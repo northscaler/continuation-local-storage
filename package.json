@@ -44,8 +44,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "cls-hooked": "4.2.2",
-    "zone.js": "0.10.3"
+    "cls-hooked": ">=4.2.2",
+    "zone.js": ">=0.10.3"
   },
   "dependencies": {
     "@babel/polyfill": "7.8.7"
