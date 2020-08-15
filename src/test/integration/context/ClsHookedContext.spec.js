@@ -6,7 +6,7 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 
 const uuid = require('uuid/v4')
-const Context = require('../../../main/context/ClsHookedContext')
+const { ClsHookedContext: Context } = require('../../../main')
 
 const tests = require('./context-tests')
 

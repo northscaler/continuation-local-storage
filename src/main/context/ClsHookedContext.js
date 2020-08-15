@@ -1,13 +1,18 @@
 'use strict'
 
 const cls = require('cls-hooked')
+const AbstractContext = require('./AbstractContext')
 
 const DEFAULT_CONTEXT_NAME = '__CLS_HOOKED_CONTEXT'
 
-class ClsHookedContext {
+class ClsHookedContext extends AbstractContext {
   constructor (name) {
-    this.name = (name || DEFAULT_CONTEXT_NAME).toString()
+    super((name || DEFAULT_CONTEXT_NAME).toString())
     this._context = cls.getNamespace(this.name) || cls.createNamespace(this.name)
+  }
+
+  dispose () {
+    cls.destroyNamespace(this.name)
   }
 
   set (name, value) {
@@ -18,10 +23,10 @@ class ClsHookedContext {
     return this._context.get((name || '').toString())
   }
 
-  run (fn, values = {}) {
+  run (fn, values = {}, opts = { autodispose: false }) {
     return this._context.runAndReturn(() => {
       Object.keys(values).forEach(key => this.set(key.toString(), values[key]))
-      return fn()
+      return this._tryRun(fn, opts)
     })
   }
 }

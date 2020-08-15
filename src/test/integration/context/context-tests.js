@@ -42,11 +42,14 @@ module.exports = {
     })).to.equal(rrv)
   },
 
-  testContextValueAvailableInSetTimeout: (Context, name, done) => {
+  testContextValueAvailableInSetTimeout: (Context, name, done, opts) => {
+    function x () { expect(Context(name).get('value')).to.equal(value) }
+
     Context(name).run(() => {
+      x()
       setTimeout(() => {
         try {
-          expect(Context(name).get('value')).to.equal(value)
+          x()
           done()
         } catch (e) {
           done(e)
@@ -54,10 +57,10 @@ module.exports = {
       }, 5)
     }, {
       value
-    })
+    }, opts)
   },
 
-  testContextValueAvailableInPromiseResolve: (Context, name, done) => {
+  testContextValueAvailableInPromiseResolve: (Context, name, done, opts) => {
     Context(name).run(() => {
       Promise.resolve()
         .then(() => {
@@ -67,10 +70,10 @@ module.exports = {
         .catch(e => done(e))
     }, {
       value
-    })
+    }, opts)
   },
 
-  testContextValueAvailableInPromiseReject: (Context, name, done) => {
+  testContextValueAvailableInPromiseReject: (Context, name, done, opts) => {
     Context(name).run(() => {
       Promise.reject(new Error('because'))
         .catch(() => {
@@ -80,7 +83,7 @@ module.exports = {
         .catch(e => done(e))
     }, {
       value
-    })
+    }, opts)
   },
 
   testContextValueAvailableInAsyncAwait: async (Context, name) => {
