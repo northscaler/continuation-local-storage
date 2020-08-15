@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, before */
 'use strict'
 
 require('zone.js/dist/zone-node')
@@ -8,11 +8,17 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 
 const uuid = require('uuid/v4')
-const { ZoneJsContext: Context } = require('../../../main')
+const { ZoneJsContext: Context } = require('../../../../main')
 
-const tests = require('./context-tests')
+const tests = require('../context-tests')
 
 describe('ZoneJsTest', function () {
+  before(function () {
+    if (process.env.NORTHSCALER_CLS_TEST_SKIP_ZONEJS) {
+      this.skip()
+    }
+  })
+
   it('should work with sync fn returning a value', function () {
     tests.testSyncFnReturningValue(Context, uuid())
   })

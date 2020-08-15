@@ -6,17 +6,14 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 
 const uuid = require('uuid/v4')
-const { AsyncLocalStorageContext: Context } = require('../../../main')
+const { ClsHookedContext: Context } = require('../../../../main')
 
-const tests = require('./context-tests')
+const tests = require('../context-tests')
 
-describe('AsyncLocalStorageTest', function () {
+describe('ClsHookedTest', function () {
   before(function () {
-    let [, major, minor] = process.version.match(/^v(\d+)\.(\d+)\.(\d+)/i)
-    major = parseInt(major)
-    minor = parseInt(minor)
-    if (major < 12 || (major === 12 && minor < 17)) {
-      this.skip() // because AsyncLocalStorage came in Node.js 12.17.0
+    if (process.env.NORTHSCALER_CLS_TEST_SKIP_CLS_HOOKED) {
+      this.skip()
     }
   })
 
@@ -33,15 +30,15 @@ describe('AsyncLocalStorageTest', function () {
   })
 
   it('should work with setTimeout', function (done) {
-    tests.testContextValueAvailableInSetTimeout(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInSetTimeout(Context, uuid(), done)
   })
 
   it('should work with Promise.resolve', function (done) {
-    tests.testContextValueAvailableInPromiseResolve(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInPromiseResolve(Context, uuid(), done)
   })
 
   it('should work with Promise.reject', function (done) {
-    tests.testContextValueAvailableInPromiseReject(Context, uuid(), done, { autodispose: false })
+    tests.testContextValueAvailableInPromiseReject(Context, uuid(), done)
   })
 
   it('should work with async/await', async function () {
