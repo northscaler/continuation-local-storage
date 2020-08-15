@@ -12,8 +12,12 @@ const tests = require('./context-tests')
 
 describe('AsyncLocalStorageTest', function () {
   before(function () {
-    const [, major, minor] = process.version.match(/^v(\d+)\.(\d+)\.(\d+)/i)
-    if (major < 12 || (major === 12 && minor < 17)) this.skip() // because AsyncLocalStorage came in Node.js 12.17.0
+    let [, major, minor] = process.version.match(/^v(\d+)\.(\d+)\.(\d+)/i)
+    major = parseInt(major)
+    minor = parseInt(minor)
+    if (major < 12 || (major === 12 && minor < 17)) {
+      this.skip() // because AsyncLocalStorage came in Node.js 12.17.0
+    }
   })
 
   it('should work with sync fn returning a value', function () {

@@ -39,7 +39,13 @@ build-11:
   script:
     - npm run build
 
-build-12:
+build-pre-12.17.0:
+  stage: build
+  image: node:12.16.3-alpine
+  script:
+    - npm run build
+
+build-post-12.17.0:
   stage: build
   image: node:12.16.3-alpine
   script:
