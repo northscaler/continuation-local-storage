@@ -1,14 +1,24 @@
 /* global Zone */
 'use strict'
 
+const AbstractContext = require('../../../dist/main/context/AbstractContext')
 const DEFAULT_CONTEXT_NAME = '__ZONE_JS_CONTEXT'
 const PROPERTIES = 'properties'
 
-class ZoneJsContext {
+/**
+ * Context class based on [zone.js](https://www.npmjs.com/package/zone.js).
+ */
+class ZoneJsContext extends AbstractContext {
   constructor (name) {
-    this.name = (name || DEFAULT_CONTEXT_NAME).toString()
+    super((name || DEFAULT_CONTEXT_NAME).toString())
     this._context = this._getZoneWith(this.name)
   }
+
+  /**
+   * @override
+   * @inheritDoc
+   */
+  dispose () { }
 
   _getZoneWith (name) {
     return Zone.current.getZoneWith(name) ||
@@ -21,18 +31,30 @@ class ZoneJsContext {
       })
   }
 
+  /**
+   * @override
+   * @inheritDoc
+   */
   set (name, value) {
     this._context.get(PROPERTIES)[(name || '').toString()] = value
   }
 
+  /**
+   * @override
+   * @inheritDoc
+   */
   get (name) {
     return this._context.get(PROPERTIES)[(name || '').toString()]
   }
 
-  run (fn, values = {}) {
+  /**
+   * @override
+   * @inheritDoc
+   */
+  run (fn, values = {}, opts = { autodispose: false }) {
     return this._context.run(() => {
       Object.keys(values).forEach(key => this.set(key.toString(), values[key]))
-      return fn()
+      return this._tryRun(fn, opts)
     })
   }
 }

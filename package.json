@@ -23,7 +23,10 @@
     "nuke": "rimraf node_modules",
     "transpile-main": "babel --delete-dir-on-start --verbose --out-dir dist/main --copy-files src/main",
     "transpile-test": "babel --delete-dir-on-start --verbose --out-dir dist/test --copy-files src/test",
-    "unit-integration": "nyc --check-coverage -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/**/*.spec.js'",
+    "unit-integration": "run-s unit-integration-cls-hooked unit-integration-zonejs unit-integration-als",
+    "unit-integration-cls-hooked": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/context/cls-hooked/**/*.spec.js'",
+    "unit-integration-zonejs": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/context/zonejs/**/*.spec.js'",
+    "unit-integration-als": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/context/als/**/*.spec.js'",
     "postunit-integration": "run-s report",
     "integration": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/integration/**/*.spec.js'",
     "postintegration": "run-s report",
@@ -44,8 +47,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "cls-hooked": "4.2.2",
-    "zone.js": "0.10.3"
+    "cls-hooked": ">=4.2.2",
+    "zone.js": ">=0.10.3"
   },
   "dependencies": {
     "@babel/polyfill": "7.8.7"
@@ -53,6 +56,7 @@
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.9.6",
+    "@babel/plugin-proposal-optional-chaining": "7.11.0",
     "@babel/preset-env": "7.9.6",
     "@babel/register": "7.9.0",
     "@babel/traverse": "7.9.6",
@@ -81,6 +85,14 @@
           "targets": {
             "node": true
           }
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-optional-chaining",
+        {
+          "loose": false
         }
       ]
     ]

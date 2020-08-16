@@ -45,6 +45,12 @@ build-12:
   script:
     - npm run build
 
+build-12.17.0:
+  stage: build
+  image: node:12.17.0-alpine
+  script:
+    - npm run build
+
 build-13:
   stage: build
   image: node:13.14.0-alpine

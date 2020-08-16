@@ -1,16 +1,24 @@
-/* global describe, it */
+/* global describe, it, before */
 'use strict'
+
+require('zone.js/dist/zone-node')
 
 const chai = require('chai')
 chai.use(require('dirty-chai'))
 const expect = chai.expect
 
 const uuid = require('uuid/v4')
-const Context = require('../../../main/context/ClsHookedContext')
+const { ZoneJsContext: Context } = require('../../../../main')
 
-const tests = require('./context-tests')
+const tests = require('../context-tests')
 
-describe('ClsHookedTest', function () {
+describe('ZoneJsTest', function () {
+  before(function () {
+    if (process.env.NORTHSCALER_CLS_TEST_SKIP_ZONEJS) {
+      this.skip()
+    }
+  })
+
   it('should work with sync fn returning a value', function () {
     tests.testSyncFnReturningValue(Context, uuid())
   })
@@ -41,7 +49,7 @@ describe('ClsHookedTest', function () {
 
   it('should give the same context when given the same name', async function () {
     const name = uuid()
-    const context = Context(name)._context
-    expect(Context(name)._context).to.equal(context)
+    const context = Context(name)._context.name
+    expect(Context(name)._context.name).to.equal(context)
   })
 })
