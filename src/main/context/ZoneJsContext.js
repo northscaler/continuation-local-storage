@@ -1,7 +1,7 @@
 /* global Zone */
 'use strict'
 
-const AbstractContext = require('../../../dist/main/context/AbstractContext')
+const AbstractContext = require('./AbstractContext')
 const DEFAULT_CONTEXT_NAME = '__ZONE_JS_CONTEXT'
 const PROPERTIES = 'properties'
 

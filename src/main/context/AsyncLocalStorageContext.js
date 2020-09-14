@@ -1,7 +1,8 @@
 'use strict'
 
 const AbstractContext = require('./AbstractContext')
-const { AsyncLocalStorage } = require('async_hooks')
+let als
+const getAls = () => als || (als = require('async_hooks').AsyncLocalStorage)
 
 const DEFAULT_CONTEXT_NAME = '__ASYNC_LOCAL_STORAGE_CONTEXT'
 
@@ -13,6 +14,7 @@ const instances = new Map()
 class AsyncLocalStorageContext extends AbstractContext {
   constructor (name) {
     super((name || DEFAULT_CONTEXT_NAME).toString())
+    const AsyncLocalStorage = getAls()
     this._als = new AsyncLocalStorage()
   }
 
