@@ -1,9 +1,9 @@
 'use strict'
 
-const cls = require('cls-hooked')
 const AbstractContext = require('./AbstractContext')
-
 const DEFAULT_CONTEXT_NAME = '__CLS_HOOKED_CONTEXT'
+let cls
+const getClsHooked = () => cls || (cls = require('cls-hooked'))
 
 /**
  * Context class based on [cls-hooked](https://www.npmjs.com/package/cls-hooked).
@@ -11,7 +11,7 @@ const DEFAULT_CONTEXT_NAME = '__CLS_HOOKED_CONTEXT'
 class ClsHookedContext extends AbstractContext {
   constructor (name) {
     super((name || DEFAULT_CONTEXT_NAME).toString())
-    this._context = cls.getNamespace(this.name) || cls.createNamespace(this.name)
+    this._context = getClsHooked().getNamespace(this.name) || getClsHooked().createNamespace(this.name)
   }
 
   /**
@@ -19,7 +19,7 @@ class ClsHookedContext extends AbstractContext {
    * @inheritDoc
    */
   dispose () {
-    cls.destroyNamespace(this.name)
+    getClsHooked().destroyNamespace(this.name)
   }
 
   /**
